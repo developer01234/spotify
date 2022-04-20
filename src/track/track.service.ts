@@ -1,12 +1,26 @@
+import { CreateTrackDto } from './dto/create-track.dto';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Comment, CommentDocument } from './shemas/comment.schema';
+import { Track, TrackDocument } from './shemas/track.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
-export class TrackService {
-  async create() {}
+export default class TrackService {
+  constructor(
+    @InjectModel(Track.name) private trackModel: Model<TrackDocument>,
+    @InjectModel(Comment.name)
+    private commentModel: Model<CommentDocument>,
+  ) {}
 
-  async getAll() {}
+  async create(dto: CreateTrackDto): Promise<Track> {
+    const track = await this.trackModel.create({ ...dto, listens: 0 });
+    return track;
+  }
 
-  async getOne() {}
+  async getAll(): Promise<void> {}
 
-  async delete() {}
+  async getOne(): Promise<void> {}
+
+  async delete(): Promise<void> {}
 }
