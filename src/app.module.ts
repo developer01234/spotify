@@ -4,6 +4,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileModule } from './file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -12,6 +14,9 @@ import { FileModule } from './file/file.module';
     ),
     TrackModule,
     FileModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

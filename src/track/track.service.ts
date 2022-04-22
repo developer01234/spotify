@@ -28,8 +28,18 @@ export default class TrackService {
     return track;
   }
 
-  async getAll(): Promise<Track[]> {
-    const tracks = await this.trackModel.find();
+  async getAll(count = 10, offset = 0): Promise<Track[]> {
+    const tracks = await this.trackModel
+      .find()
+      .skip(Number(offset))
+      .limit(Number(count));
+    return tracks;
+  }
+
+  async search(query: string): Promise<Track[]> {
+    const tracks = await this.trackModel.find({
+      name: { $regex: new RegExp(query, 'i') },
+    });
     return tracks;
   }
 
